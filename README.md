@@ -16,7 +16,7 @@ All system pages are connected to reflect real-time changes across the applicati
 ## 🚀 Key Features
 
 ### 🧾 Order Management
-- Create and manage orders بسهولة  
+- Create and manage orders   
 - Order statuses: Ordered, Preparing, Delivered  
 - Seamless flow between POS, Orders, and Kitchen pages  
 
