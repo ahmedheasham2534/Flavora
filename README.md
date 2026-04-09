@@ -73,21 +73,6 @@ All system pages are connected to reflect real-time changes across the applicati
 4. 📊 Reports track activity and performance  
 5. 🔔 Notifications inform about new updates  
 
----
-
-## 📂 Project Structure
-project/
-│
-├── index.html
-├── flavora-phone.html
-├── CSS/
-│ └── style.css
-├── JS/
-│ └── script.js
-├── imgs/
-
-
----
 
 ## ☁️ Future Improvements
 
