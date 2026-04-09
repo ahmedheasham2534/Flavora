@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flavora POS · Kitchen</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="./imgs/flavora.png">
+<link rel="stylesheet" href="./CSS/kitchen.css">
+<link rel="stylesheet" href="./CSS/all.min.css">
+<link rel="stylesheet" href="./CSS/all.css">
+</head>
+<script>
+  function checkDevice() {
+    const isMobile = window.innerWidth <= 1024;
+
+    if (isMobile) {
+      window.location.href = "./flavora-phone.html"; 
+    }
+  }
+
+  checkDevice();
+
+  window.addEventListener("resize", checkDevice);
+</script>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <a class="logo" href="./index.html">
+    <div class="logo-icon"><i class="fas fa-utensils"></i></div>
+    Flavora <span class="logo-pos">P<span>OS</span></span>
+  </a>
+  <nav class="nav-pill">
+    <a class="nav-btn" href="./index.html"><i class="fas fa-cash-register"></i> POS</a>
+    <a class="nav-btn" href="./orders.html"><i class="fas fa-list-ul"></i> Orders</a>
+    <a class="nav-btn active" href="./kitchen.html"><i class="fas fa-fire"></i> Kitchen</a>
+    <a class="nav-btn" href="./reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+  </nav>
+  <div class="hdr-right">
+    <div class="hdr-meta">
+      <div class="hdr-stat"><div class="h-dot" style="background:var(--yellow)"></div><span id="statNew">0 New</span></div>
+      <div class="hdr-stat"><div class="h-dot" style="background:var(--blue)"></div><span id="statPreparing">0 Cooking</span></div>
+      <div class="hdr-stat"><div class="h-dot" style="background:var(--green)"></div><span id="statReady">0 Ready</span></div>
+      <div class="kit-clock" id="kitClock">--:--:--</div>
+    </div>
+    <div class="div-v"></div>
+    <button class="icon-btn" onclick="toggleDark()" title="Dark mode"><i class="fas fa-moon" id="darkIcon"></i></button>
+    <button class="icon-btn" style="position:relative" title="Notifications" id="bellBtn"><i class="fas fa-bell"></i><span class="notif-dot" id="bellDot" style="display:none"></span></button>
+    <div class="div-v"></div>
+    <button class="avatar-btn">A</button>
+  </div>
+</header>
+
+<!-- ══ KITCHEN TOP BAR ══ -->
+<div class="kit-top">
+  <div>
+    <h2>🔥 Kitchen Display System</h2>
+    <div style="font-size:12px;color:var(--muted);margin-top:2px;">Live order tickets — check off items as they're prepared</div>
+  </div>
+  <div class="kit-top-right">
+    <button onclick="renderKitchen()" style="padding:8px 14px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;"><i class="fas fa-sync-alt"></i> Refresh</button>
+  </div>
+</div>
+
+<!-- ══ KITCHEN BODY ══ -->
+<div class="kit-body">
+
+  <!-- Column 1: New Orders -->
+  <div class="kit-col">
+    <div class="kit-col-hdr">
+      <h3><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--yellow);margin-right:6px;"></span>New Orders</h3>
+      <span class="col-count" id="countNew">0</span>
+    </div>
+    <div class="kit-tickets" id="colNew"></div>
+  </div>
+
+  <!-- Column 2: Preparing -->
+  <div class="kit-col">
+    <div class="kit-col-hdr">
+      <h3><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--blue);margin-right:6px;"></span>Preparing</h3>
+      <span class="col-count" id="countPreparing">0</span>
+    </div>
+    <div class="kit-tickets" id="colPreparing"></div>
+  </div>
+
+  <!-- Column 3: Ready to Serve -->
+  <div class="kit-col ready-col">
+    <div class="kit-col-hdr">
+      <h3><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px;"></span>Ready to Serve</h3>
+      <span class="col-count" id="countReady">0</span>
+    </div>
+    <div class="kit-tickets" id="colReady"></div>
+  </div>
+
+  <!-- Column 4: Add Menu Items -->
+  <div class="kit-col menu-col">
+    <div class="kit-col-hdr">
+      <h3><i class="fas fa-plus-circle" style="color:var(--blue)"></i> Quick Add Item</h3>
+      <span class="col-count">Menu</span>
+    </div>
+    <div class="menu-add-list" id="menuAddList"></div>
+  </div>
+
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="./JS/kitchen.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flavora POS · Orders</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="./imgs/flavora.png">
+<link rel="stylesheet" href="./CSS/orders.css">
+<link rel="stylesheet" href="./CSS/all.min.css">
+<link rel="stylesheet" href="./CSS/all.css">
+</head>
+<script>
+  function checkDevice() {
+    const isMobile = window.innerWidth <= 1024;
+
+    if (isMobile) {
+      window.location.href = "./flavora-phone.html"; 
+    }
+  }
+
+  checkDevice();
+
+  window.addEventListener("resize", checkDevice);
+</script>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <a class="logo" href="./index.html">
+    <div class="logo-icon"><i class="fas fa-utensils"></i></div>
+    Flavora <span class="logo-pos">P<span>OS</span></span>
+  </a>
+  <nav class="nav-pill">
+    <a class="nav-btn" href="./index.html"><i class="fas fa-cash-register"></i> POS</a>
+    <a class="nav-btn active" href="./orders.html"><i class="fas fa-list-ul"></i> Orders</a>
+    <a class="nav-btn" href="./kitchen.html"><i class="fas fa-fire"></i> Kitchen</a>
+    <a class="nav-btn" href="./reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+  </nav>
+  <div class="hdr-right">
+    <button class="icon-btn" onclick="toggleDark()" title="Dark mode"><i class="fas fa-moon" id="darkIcon"></i></button>
+    <button class="icon-btn" style="position:relative" title="Notifications"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+    <div class="div-v"></div>
+    <button class="avatar-btn">A</button>
+  </div>
+</header>
+
+<!-- ══ PAGE BODY ══ -->
+<div class="page-body">
+
+  <!-- Toolbar -->
+  <div class="page-toolbar">
+    <div class="page-title">Order Management</div>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search orders…" oninput="renderAll()">
+      </div>
+      <button class="flt-btn active" onclick="setType('all',this)">All</button>
+      <button class="flt-btn" onclick="setType('dinein',this)">Dine In</button>
+      <button class="flt-btn" onclick="setType('takeaway',this)">Take Away</button>
+      <button class="flt-btn" onclick="setType('delivery',this)">Delivery</button>
+      <button class="refresh-btn" onclick="renderAll()"><i class="fas fa-sync-alt"></i> Refresh</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- Kanban -->
+  <div class="kanban">
+    <!-- Ordered -->
+    <div class="k-col" id="colOrdered">
+      <div class="k-col-hdr">
+        <h3><div class="col-dot" style="background:var(--yellow)"></div> Ordered</h3>
+        <span class="k-badge" id="badgeOrdered">0</span>
+      </div>
+      <div class="k-tickets" id="ticketsOrdered"></div>
+    </div>
+    <!-- Preparing -->
+    <div class="k-col" id="colPreparing">
+      <div class="k-col-hdr">
+        <h3><div class="col-dot" style="background:var(--blue)"></div> Preparing</h3>
+        <span class="k-badge" id="badgePreparing">0</span>
+      </div>
+      <div class="k-tickets" id="ticketsPreparing"></div>
+    </div>
+    <!-- Delivered -->
+    <div class="k-col delivered-col" id="colDelivered">
+      <div class="k-col-hdr">
+        <h3><div class="col-dot" style="background:var(--green)"></div> Delivered</h3>
+        <span class="k-badge" id="badgeDelivered">0</span>
+      </div>
+      <div class="k-tickets" id="ticketsDelivered"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ DETAIL MODAL ══ -->
+<div class="overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2 id="dmTitle">Order Detail</h2>
+      <button class="modal-close" onclick="closeDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-sec"><h4>Items</h4><div id="dmItems"></div></div>
+      <div class="modal-sec"><h4>Order Info</h4><div class="meta-grid" id="dmMeta"></div></div>
+      <div class="modal-sec">
+        <h4>Update Status</h4>
+        <div class="status-btns" id="dmStatuses"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="./JS/orders.js"></script>
+</body>
+</html>

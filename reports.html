@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flavora POS · Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="icon" href="./imgs/flavora.png">
+<link rel="stylesheet" href="./CSS/reports.css">
+<link rel="stylesheet" href="./CSS/all.min.css">
+<link rel="stylesheet" href="./CSS/all.css">
+</head>
+<script>
+  function checkDevice() {
+    const isMobile = window.innerWidth <= 1024;
+
+    if (isMobile) {
+      window.location.href = "./flavora-phone.html"; 
+    }
+  }
+
+  checkDevice();
+
+  window.addEventListener("resize", checkDevice);
+</script>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <a class="logo" href="./index.html">
+    <div class="logo-icon"><i class="fas fa-utensils"></i></div>
+    Flavora <span class="logo-pos">P<span>OS</span></span>
+  </a>
+  <nav class="nav-pill">
+    <a class="nav-btn" href="./index.html"><i class="fas fa-cash-register"></i> POS</a>
+    <a class="nav-btn" href="./orders.html"><i class="fas fa-list-ul"></i> Orders</a>
+    <a class="nav-btn" href="./kitchen.html"><i class="fas fa-fire"></i> Kitchen</a>
+    <a class="nav-btn active" href="./reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+  </nav>
+  <div class="hdr-right">
+    <button class="icon-btn" onclick="toggleDark()" title="Dark mode"><i class="fas fa-moon" id="darkIcon"></i></button>
+    <button class="icon-btn" style="position:relative" title="Notifications"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+    <div class="div-v"></div>
+    <button class="avatar-btn">A</button>
+  </div>
+</header>
+
+<!-- ══ PAGE SCROLL ══ -->
+<div class="page-scroll">
+
+  <!-- Toolbar -->
+  <div class="rep-toolbar">
+    <h2>Reports & Analytics</h2>
+    <div class="date-btns">
+      <button class="dr-btn active" onclick="setRange('today',this)">Today</button>
+      <button class="dr-btn" onclick="setRange('week',this)">This Week</button>
+      <button class="dr-btn" onclick="setRange('month',this)">This Month</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Revenue Over Time</h3>
+      <div class="chart-subhead">Orders from your POS system</div>
+      <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Order Types</h3>
+      <div class="chart-subhead">Dine in · Take away · Delivery</div>
+      <div class="chart-wrap"><canvas id="typeChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Bottom row -->
+  <div class="bottom-row">
+    <!-- Top Items -->
+    <div class="rep-card">
+      <div class="rep-card-hdr"><h3>🏆 Top Selling Items</h3><span>By revenue</span></div>
+      <div id="topItems"></div>
+    </div>
+    <!-- Order types breakdown -->
+    <div class="rep-card">
+      <div class="rep-card-hdr"><h3>📦 Order Breakdown</h3><span>By type</span></div>
+      <div id="typeBreakdown"></div>
+    </div>
+    <!-- Recent activity -->
+    <div class="rep-card">
+      <div class="rep-card-hdr"><h3>📋 Order Log</h3><span>Latest orders</span></div>
+      <div id="activityLog"></div>
+    </div>
+  </div>
+
+  <!-- Orders table -->
+  <div class="orders-table-card">
+    <h3>All Orders</h3>
+    <div style="overflow-x:auto;">
+      <table class="tbl" id="ordersTable">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Type</th>
+            <th>Items</th>
+            <th>Waiter</th>
+            <th>Time</th>
+            <th>Total</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /page-scroll -->
+
+<script src="./JS/reports.js"></script>
+</body>
+</html>

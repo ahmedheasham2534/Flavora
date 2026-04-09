@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Flavora POS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="./CSS/style.css">
+<link rel="stylesheet" href="./CSS/all.min.css">
+<link rel="stylesheet" href="./CSS/all.css">
+<link rel="icon" href="./imgs/flavora.png">
+</head>
+<body>
+  <script>
+    function checkDevice() {
+      const isMobile = window.innerWidth <= 1024;
+  
+      if (isMobile) {
+        window.location.href = "./flavora-phone.html"; 
+      }
+    }
+  
+    checkDevice();
+  
+    window.addEventListener("resize", checkDevice);
+  </script>
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon"><i class="fas fa-utensils"></i></div>
+
+      Flavora <span class="logo-pos">P<span>OS</span></span>
+  </div>
+
+  <nav class="nav-pill">
+    <a id="system" style="text-decoration: none;" href="./index.html"><button class="nav-item" onclick="setPage('pos',this)"><i class="fas fa-list-ul"></i> POS</button></a>
+    <a style="text-decoration: none;" href="./orders.html"><button class="nav-item" onclick="setPage('orders',this)"><i class="fas fa-list-ul"></i> Orders</button></a>
+    <a style="text-decoration: none;" href="./kitchen.html"><button class="nav-item" onclick="setPage('kitchen',this)"><i class="fas fa-list-ul"></i> kitchen</button></a>
+    <a style="text-decoration: none;" href="./reports.html"><button class="nav-item" onclick="setPage('reports',this)"><i class="fas fa-list-ul"></i> Reports</button></a>
+  </nav>
+
+  <div class="header-right">
+    <button class="icon-btn" onclick="toggleDark()" id="darkBtn" title="Toggle dark mode">
+      <i class="fas fa-moon" id="darkIcon"></i>
+    </button>
+    <button class="icon-btn" title="Notifications" onclick="toggleNotifications()">
+      <i class="fas fa-bell"></i>
+      <span class="badge-dot" id="notifDot"></span>
+    </button>
+    
+    <div class="notif-dropdown" id="notifDropdown"></div>
+    <div class="divider-v"></div>
+    <div class="avatar" title="Admin">A</div>
+  </div>
+</header>
+
+<!-- MAIN APP -->
+<div class="app-body">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="left-scroll">
+
+      <div class="strip-header"><h3>Recent Orders</h3><a href="#">View all →</a></div>
+      <div class="orders-strip" id="ordersStrip"></div>
+
+      <div class="toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search menu... (press /)" oninput="filterMenu()">
+        </div>
+        <button class="filter-btn active" onclick="setTypeFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setTypeFilter('veg',this)">🌿 Veg</button>
+        <button class="filter-btn" onclick="setTypeFilter('nonveg',this)">🍗 Non-Veg</button>
+      </div>
+
+      <div class="cats" id="catsRow"></div>
+
+      <div class="section-head">
+        <h3>Menu</h3>
+        <span class="item-count" id="itemCount">0 items</span>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="rp-header">
+      <div class="rp-header-top">
+        <div>
+          <div style="font-weight:700;font-size:16px;" id="orderIdDisplay">Order #0001</div>
+          <div class="rp-time" id="orderTimeDisplay"></div>
+        </div>
+        <button class="icon-btn" onclick="clearCart()" title="Clear order"><i class="fas fa-trash-alt"></i></button>
+      </div>
+      <div class="order-types">
+        <button class="ot-btn active" onclick="setOrderType('dinein',this)">Dine In</button>
+        <button class="ot-btn" onclick="setOrderType('takeaway',this)">Take Away</button>
+        <button class="ot-btn" onclick="setOrderType('delivery',this)">Delivery</button>
+      </div>
+    </div>
+
+    <div class="rp-selects">
+      <select id="waiterSelect">
+        <option value="">👤 Waiter</option>
+        <option>Ahmed</option>
+        <option>Sara</option>
+        <option>Mohammed</option>
+        <option>Layla</option>
+      </select>
+      <select id="tableSelect">
+        <option value="">🪑 Table</option>
+        <option>Table 1</option>
+        <option>Table 2</option>
+        <option>Table 3</option>
+        <option>Table 4</option>
+        <option>Table 5</option>
+      </select>
+    </div>
+
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <i class="fas fa-shopping-bag"></i>
+        <p>No items yet.<br>Click a menu item to add.</p>
+      </div>
+    </div>
+
+    <div class="rp-footer">
+      <div class="discount-row">
+        <input class="discount-input" id="discountInput" type="text" placeholder="Discount code (try SAVE10)">
+        <button class="apply-btn" onclick="applyDiscount()">Apply</button>
+      </div>
+      <div class="totals-table">
+        <div class="total-row"><span>Subtotal</span><span id="subtotalDisplay">$0.00</span></div>
+        <div class="total-row" id="discountRow" style="display:none"><span>Discount</span><span id="discountDisplay" class="discount-badge">-$0.00</span></div>
+        <div class="total-row"><span>Tax (10%)</span><span id="taxDisplay">$0.00</span></div>
+        <div class="total-row main"><span>Total</span><span id="totalDisplay">$0.00</span></div>
+      </div>
+      <button class="pay-btn" id="payBtn" onclick="openPaymentModal()" disabled>
+        <i class="fas fa-credit-card"></i> Place Order & Pay
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ITEM MODAL -->
+<div class="overlay" id="itemOverlay" onclick="if(event.target===this) closeItemModal()">
+  <div class="modal item-modal">
+    <div class="item-modal-img" id="modalEmoji"></div>
+    <div class="item-modal-body">
+      <button class="modal-close" onclick="closeItemModal()"><i class="fas fa-times"></i></button>
+      <h2 id="modalTitle"></h2>
+      <p class="desc" id="modalDesc"></p>
+      <div class="modal-section-label">Size</div>
+      <div class="size-options" id="sizeOptions"></div>
+      <div class="modal-section-label">Add-ons</div>
+      <div class="addon-options" id="addonOptions"></div>
+      <div class="modal-section-label">Special Note</div>
+      <textarea class="note-area" id="noteArea" rows="2" placeholder="Any special requests?"></textarea>
+      <div class="item-modal-foot">
+        <div class="modal-qty">
+          <button class="qty-btn" onclick="modalQty(-1)">−</button>
+          <span class="qty-num" id="modalQtyNum">1</span>
+          <button class="qty-btn" onclick="modalQty(1)">+</button>
+        </div>
+        <div class="modal-total">
+          <span>Total</span>
+          <strong id="modalTotal">$0</strong>
+        </div>
+        <button class="add-cart-btn" onclick="addToCartFromModal()">
+          <i class="fas fa-plus"></i> Add to Order
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="payOverlay" onclick="if(event.target===this) closePayModal()">
+  <div class="modal pay-modal">
+    <div class="pay-modal-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <h2>Payment</h2>
+          <p id="payOrderId">Order #0001</p>
+        </div>
+        <button class="modal-close" onclick="closePayModal()" style="position:static"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    <div class="pay-modal-body">
+      <div class="pay-summary">
+        <div class="pay-summary-row"><span>Subtotal</span><span id="pSubtotal"></span></div>
+        <div class="pay-summary-row" id="pDiscountRow" style="display:none"><span>Discount</span><span id="pDiscount" style="color:var(--green)"></span></div>
+        <div class="pay-summary-row"><span>Tax</span><span id="pTax"></span></div>
+        <div class="pay-summary-row total"><span>Total Due</span><span id="pTotal"></span></div>
+      </div>
+      <div class="pay-methods-label">Payment Method</div>
+      <div class="pay-methods">
+        <button class="pay-method active" onclick="selectPayMethod('cash',this)">
+          <i class="fas fa-money-bill-wave"></i><span>Cash</span>
+        </button>
+        <button class="pay-method" onclick="selectPayMethod('card',this)">
+          <i class="fas fa-credit-card"></i><span>Card</span>
+        </button>
+        <button class="pay-method" onclick="selectPayMethod('wallet',this)">
+          <i class="fas fa-mobile-alt"></i><span>Wallet</span>
+        </button>
+      </div>
+      <div class="cash-amount-row" id="cashRow">
+        <input class="cash-input" id="cashGiven" type="number" placeholder="Amount given" oninput="calcChange()">
+        <div class="change-display" id="changeDisplay"><i class="fas fa-coins"></i> $0.00</div>
+      </div>
+      <button class="confirm-pay-btn" onclick="confirmPayment()">
+        <i class="fas fa-check-circle"></i> Confirm Payment
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT MODAL -->
+<div class="overlay" id="receiptOverlay">
+  <div class="modal receipt-modal" id="receiptModal">
+    <div class="receipt-body">
+      <div class="receipt-logo">
+        <img style="width: 70px;" src="./imgs/flavora.png" alt="">
+        <p>123 Food Street, Cairo · Tel: +20-100-0000000</p>
+      </div>
+      <hr class="receipt-divider">
+      <div class="receipt-row"><span>Order</span><span id="rOrderId"></span></div>
+      <div class="receipt-row"><span>Type</span><span id="rOrderType"></span></div>
+      <div class="receipt-row"><span>Date</span><span id="rDate"></span></div>
+      <div class="receipt-row"><span>Waiter</span><span id="rWaiter"></span></div>
+      <hr class="receipt-divider">
+      <div class="receipt-items" id="rItems"></div>
+      <hr class="receipt-divider">
+      <div class="receipt-row"><span>Subtotal</span><span id="rSubtotal"></span></div>
+      <div class="receipt-row" id="rDiscRow" style="display:none"><span>Discount</span><span id="rDiscount"></span></div>
+      <div class="receipt-row"><span>Tax (10%)</span><span id="rTax"></span></div>
+      <div class="receipt-total"><span>TOTAL</span><span id="rTotal"></span></div>
+      <div class="receipt-row" style="margin-top:8px"><span>Payment</span><span id="rPayMethod"></span></div>
+      <div class="receipt-row" id="rChangeRow" style="display:none"><span>Change</span><span id="rChange"></span></div>
+      <hr class="receipt-divider">
+      <div class="receipt-footer">
+        <p>Thank you for dining with us! 🍽️</p>
+        <p style="margin-top:4px;font-family:var(--mono);font-size:11px;" id="rOrderNum"></p>
+      </div>
+    </div>
+    <div class="receipt-actions">
+      <button class="print-btn secondary" onclick="closeReceiptModal()">Close</button>
+      <button class="print-btn primary" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container" id="toastContainer"></div>
+<script src="./JS/script.js"></script>
+
+
+</body>
+</html>
